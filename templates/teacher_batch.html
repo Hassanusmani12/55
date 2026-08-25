@@ -6,10 +6,9 @@
     <title>Manage Batch - {{ batch.batch_code }} | EduPredict</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
         body { font-family: 'Inter', sans-serif; background-color: #050505; color: #e5e5e5; }
-        /* Fix for dark mode date picker calendar icon */
         ::-webkit-calendar-picker-indicator { filter: invert(1); opacity: 0.5; cursor: pointer; }
     </style>
 </head>
@@ -20,11 +19,19 @@
     
     <div class="max-w-7xl mx-auto">
         
-        <!-- Top Navigation / Back -->
-        <div class="mb-6">
-            <a href="/teacher" class="text-gray-400 hover:text-amber-500 transition-colors text-sm font-medium flex items-center gap-2 w-fit">
+        <!-- Top Navigation Bar -->
+        <div class="flex justify-between items-center mb-6">
+            <a href="/teacher" class="text-gray-400 hover:text-amber-500 transition-colors text-sm font-medium flex items-center gap-2">
                 <i class="fa-solid fa-arrow-left"></i> Back to Dashboard
             </a>
+            <div class="flex items-center gap-4">
+                <a href="/support" class="bg-white/5 border border-white/10 hover:bg-white/10 text-gray-300 text-xs font-mono uppercase tracking-widest px-4 py-2 rounded transition-colors flex items-center gap-2">
+                    <i class="fa-solid fa-headset text-amber-500"></i> Support
+                </a>
+                <a href="/notifications" class="text-gray-400 hover:text-amber-500 transition-colors p-1">
+                    <i class="fa-solid fa-bell text-xl"></i>
+                </a>
+            </div>
         </div>
 
         <!-- Header Section -->
@@ -88,25 +95,51 @@
                     </form>
                 </div>
 
-                <!-- Enrolled Students Roster -->
+                <!-- Enrolled Students & Attendance Roster -->
                 <div class="bg-[#0f0f0f] border border-white/5 p-6 rounded-xl shadow-2xl">
-                    <h2 class="text-lg font-medium text-white mb-5 flex items-center gap-2">
-                        <i class="fa-solid fa-users text-amber-500"></i> Roster
-                    </h2>
-                    <ul class="space-y-3">
+                    <div class="flex items-center justify-between mb-5">
+                        <h2 class="text-lg font-medium text-white flex items-center gap-2">
+                            <i class="fa-solid fa-user-check text-amber-500"></i> Attendance Roster
+                        </h2>
+                    </div>
+
+                    <div class="space-y-4">
                         {% for s in students %}
-                        <li class="flex items-center gap-3 p-3 bg-white/[0.02] border border-white/5 rounded-lg hover:border-amber-500/30 transition-colors">
-                            <div class="w-8 h-8 rounded-full bg-[#1a1a1a] flex items-center justify-center text-gray-400 flex-shrink-0">
-                                <i class="fa-regular fa-user text-xs"></i>
+                        <div class="p-3 bg-white/[0.02] border border-white/5 rounded-lg space-y-2">
+                            <div class="flex items-center gap-3">
+                                <div class="w-8 h-8 rounded-full bg-[#1a1a1a] flex items-center justify-center text-amber-500 flex-shrink-0 border border-amber-500/20">
+                                    <i class="fa-regular fa-user text-xs"></i>
+                                </div>
+                                <span class="text-xs font-mono text-gray-300 truncate flex-grow">{{ s.student }}</span>
                             </div>
-                            <span class="text-sm font-medium text-gray-300 truncate">{{ s.student }}</span>
-                        </li>
+
+                            <!-- Attendance Action Form -->
+                            <div class="flex gap-2 pt-1 border-t border-white/5">
+                                <form action="/mark_attendance" method="POST" class="flex-1 m-0">
+                                    <input type="hidden" name="student_email" value="{{ s.student }}">
+                                    <input type="hidden" name="batch_id" value="{{ batch._id }}">
+                                    <input type="hidden" name="status" value="present">
+                                    <button type="submit" class="w-full bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-400 border border-emerald-500/20 text-[10px] font-mono uppercase tracking-widest py-1.5 rounded transition-colors flex items-center justify-center gap-1">
+                                        <i class="fa-solid fa-check"></i> Present
+                                    </button>
+                                </form>
+
+                                <form action="/mark_attendance" method="POST" class="flex-1 m-0">
+                                    <input type="hidden" name="student_email" value="{{ s.student }}">
+                                    <input type="hidden" name="batch_id" value="{{ batch._id }}">
+                                    <input type="hidden" name="status" value="absent">
+                                    <button type="submit" class="w-full bg-red-500/10 hover:bg-red-500/20 text-red-400 border border-red-500/20 text-[10px] font-mono uppercase tracking-widest py-1.5 rounded transition-colors flex items-center justify-center gap-1">
+                                        <i class="fa-solid fa-xmark"></i> Absent
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
                         {% else %}
-                        <li class="text-center py-6 text-gray-500 text-sm italic border border-dashed border-white/10 rounded-lg">
+                        <div class="text-center py-6 text-gray-500 text-sm italic border border-dashed border-white/10 rounded-lg">
                             No students enrolled yet.
-                        </li>
+                        </div>
                         {% endfor %}
-                    </ul>
+                    </div>
                 </div>
 
             </div>

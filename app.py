@@ -13,7 +13,16 @@ app.secret_key = "aa"
 app.config["UPLOAD_FOLDER"] = os.path.join(os.path.dirname(__file__), "uploads")
 os.makedirs(app.config["UPLOAD_FOLDER"], exist_ok=True)
 
-client = MongoClient("mongodb://localhost:27017/")
+mongo_uri = os.environ.get("MONGO_URI", "mongodb://localhost:27017/")
+try:
+    client = MongoClient(mongo_uri, serverSelectionTimeoutMS=2000)
+    client.admin.command('ping')
+    print(f"Success: Connected to MongoDB at {mongo_uri}")
+except Exception as e:
+    print(f"Warning: Could not connect to MongoDB ({e}). Falling back to in-memory mongomock.")
+    import mongomock
+    client = mongomock.MongoClient()
+
 db = client["mydatabase"] 
 
 # Create collections if they don't exist
@@ -107,11 +116,47 @@ def admin():
     if "user" not in session or session.get("role") != "admin": 
         return redirect("/login")
     
-    all_users = users.find()
-    all_batches = batches.find()
-    teacher_list = users.find({"role": "teacher"})
+    all_users = list(users.find())
+    all_batches = list(batches.find())
+    teacher_list = list(users.find({"role": "teacher"}))
+    open_tickets_count = support_tickets.count_documents({"status": "Open"})
+
+    return render_template("admin.html", users=all_users, teacher_list=teacher_list, batches=all_batches, open_tickets_count=open_tickets_count)
+
+@app.route("/ingest", methods=["POST"])
+def ingest_data():
+    if "user" not in session or session.get("role") not in ["admin", "analyst"]:
+        return redirect("/login")
+
+    file = request.files.get("dataset_file")
+    dataset_type = request.form.get("dataset_type", "academic_records")
     
-    return render_template("admin.html", users=all_users, teacher_list=teacher_list, batches=all_batches)
+    if file and file.filename and file.filename.endswith(".csv"):
+        filename = f"ingested_{int(datetime.now().timestamp())}_{file.filename}"
+        filepath = os.path.join(app.config["UPLOAD_FOLDER"], filename)
+        file.save(filepath)
+
+        try:
+            df = pd.read_csv(filepath)
+            records = df.to_dict(orient="records")
+            if records:
+                coll_name = f"ingested_{dataset_type}"
+                db[coll_name].insert_many(records)
+                create_notification(
+                    recipient_email=session.get("user"),
+                    title="📥 Data Ingestion Successful",
+                    message=f"Successfully ingested {len(records)} records from {file.filename} into '{coll_name}'.",
+                    alert_type="success"
+                )
+        except Exception as e:
+            create_notification(
+                recipient_email=session.get("user"),
+                title="❌ Data Ingestion Failed",
+                message=f"Error ingesting CSV dataset: {str(e)}",
+                alert_type="danger"
+            )
+
+    return redirect(request.referrer or "/admin")
 
 @app.route("/change_role", methods=["POST"])
 def change_role():

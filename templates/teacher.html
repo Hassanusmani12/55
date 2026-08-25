@@ -27,15 +27,21 @@
                     <p class="text-gray-500 text-sm mt-1">Manage your active classes and assignments</p>
                 </div>
             </div>
-            <div class="flex items-center gap-6">
+            <div class="flex items-center gap-4">
+                <!-- Support Link -->
+                <a href="/support" class="bg-white/5 border border-white/10 hover:bg-white/10 text-gray-300 text-xs font-mono uppercase tracking-widest px-4 py-2.5 rounded transition-colors flex items-center gap-2">
+                    <i class="fa-solid fa-headset text-amber-500"></i> Support
+                </a>
+
                 <!-- Notification Bell -->
-                <a href="/notifications" class="relative text-gray-400 hover:text-amber-500 transition-colors">
+                <a href="/notifications" class="relative text-gray-400 hover:text-amber-500 transition-colors p-2">
                     <i class="fa-solid fa-bell text-xl"></i>
-                    <span id="notif-badge" class="hidden absolute -top-1.5 -right-2 bg-red-500 text-white text-[10px] font-bold h-4 w-4 flex items-center justify-center rounded-full border border-[#050505]">
+                    <span id="notif-badge" class="hidden absolute top-0 right-0 bg-red-500 text-white text-[10px] font-bold h-4 w-4 flex items-center justify-center rounded-full border border-[#050505]">
                         0
                     </span>
                 </a>
-                <a href="/logout" class="bg-white/5 border border-white/10 hover:bg-white/10 text-gray-300 text-xs uppercase tracking-widest px-6 py-2.5 rounded transition-colors">
+
+                <a href="/logout" class="bg-white/5 border border-white/10 hover:bg-white/10 text-gray-300 text-xs uppercase tracking-widest px-5 py-2.5 rounded transition-colors">
                     Terminate Session
                 </a>
             </div>
