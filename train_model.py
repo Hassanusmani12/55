@@ -34,18 +34,21 @@ anomaly_model.fit(X_anomaly)
 joblib.dump(anomaly_model, 'anomaly_model.pkl')
 print("[3/4] Anomaly Detection Model trained.")
 
-# --- 4. COURSE DEMAND PREDICTOR (New) ---
-# Simulating historical course demand data
-demand_data = pd.DataFrame({
-    'course_difficulty': np.random.randint(1, 10, 200),
-    'teacher_rating': np.random.uniform(3.0, 5.0, 200),
-    'past_enrollments': np.random.randint(10, 100, 200)
-})
-# Target: Next semester's predicted enrollment
-y_demand = (demand_data['past_enrollments'] * 1.1 + demand_data['teacher_rating'] * 5).astype(int)
-
+# --- 4. COURSE DEMAND PREDICTOR ---
+courses = {0: "Advance Diploma in Software Engineering", 1: "Intermediate Computer Science", 2: "MERN Stack Web Development", 3: "Flutter Mobile App Development"}
+demand_list = []
+for year in range(2021, 2027):
+    for term in range(1, 3):
+        for c_id in courses.keys():
+            base = 100 + (c_id * 15)
+            growth = (year - 2020) * 12
+            noise = np.random.randint(-15, 25)
+            demand_list.append([year, term, c_id, base + growth + noise])
+df_demand = pd.DataFrame(demand_list, columns=['year', 'term', 'course_id', 'enrollments'])
+X_dem = df_demand[['year', 'term', 'course_id']]
+y_dem = df_demand['enrollments']
 demand_model = RandomForestRegressor(n_estimators=100, random_state=42)
-demand_model.fit(demand_data, y_demand)
+demand_model.fit(X_dem, y_dem)
 joblib.dump(demand_model, 'demand_model.pkl')
 print("[4/4] Course Demand Model trained.")
 
