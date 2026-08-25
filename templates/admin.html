@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Admin Dashboard</title>
+    <style>
+        body { font-family: serif; margin: 20px; }
+        table { border-collapse: collapse; margin-bottom: 30px; }
+        th, td { border: 1px solid #a0a0a0; padding: 5px 10px; text-align: left; }
+        th { font-weight: bold; }
+    </style>
+    
+</head>
+<body>
+    <h1>ADMIN DASHBOARD</h1>
+    <!-- Real-Time Notification Bell Component -->
+    <a href="/notifications" class="btn btn-outline-light position-relative me-3">
+        <i class="fa-solid fa-bell"></i>
+        <span id="notif-badge" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger d-none">
+            0
+        </span>
+    </a>
+    <a href="/logout"><button>Logout</button></a>
+    <hr>
+
+    <h2>All Users</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Email</th>
+                <th>Role</th>
+                <th>Change Role</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for user in users %}
+            <tr>
+                <td>{{ user.email }}</td>
+                <td>{{ user.role }}</td>
+                <td>
+                    <form action="/change_role" method="POST" style="margin:0;">
+                        <input type="hidden" name="email" value="{{ user.email }}">
+                        <select name="role">
+                            <option value="student" {% if user.role == 'student' %}selected{% endif %}>Student</option>
+                            <option value="teacher" {% if user.role == 'teacher' %}selected{% endif %}>Teacher</option>
+                            <option value="analyst" {% if user.role == 'analyst' %}selected{% endif %}>Analyst</option>
+                            <option value="admin" {% if user.role == 'admin' %}selected{% endif %}>Admin</option>
+                        </select>
+                        <button type="submit">Update</button>
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <hr>
+
+    <h2>Create New Batch</h2>
+    <form action="/add_batches" method="POST">
+        <input type="text" name="batch_code" placeholder="Batch Code" required>
+        <input type="text" name="timing" placeholder="Timing (e.g. 3-5)" required>
+        <input type="text" name="days" placeholder="Days (e.g. T.T.S)" required>
+        <select name="teacher" required>
+            <option value="" disabled selected>Select Teacher</option>
+            {% for t in teacher_list %}
+            <option value="{{ t.email }}">{{ t.email }}</option>
+            {% endfor %}
+        </select>
+        <button type="submit">Create Batch</button>
+    </form>
+
+    <br>
+    
+    <h2>All Batches</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Batch Code</th>
+                <th>Timing</th>
+                <th>Days</th>
+                <th>Teacher</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for b in batches %}
+            <tr>
+                <td>{{ b.batch_code }}</td>
+                <td>{{ b.timing }}</td>
+                <td>{{ b.days }}</td>
+                <td>{{ b.teacher }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <script>
+        function updateNotificationBadge() {
+            fetch('/api/unread_notifications_count')
+                .then(res => res.json())
+                .then(data => {
+                    const badge = document.getElementById('notif-badge');
+                    if (data.count > 0) {
+                        badge.innerText = data.count;
+                        badge.classList.remove('d-none');
+                    } else {
+                        badge.classList.add('d-none');
+                    }
+                })
+                .catch(err => console.error("Notification polling error:", err));
+        }
+
+        // Initial check and periodic polling every 10 seconds
+        updateNotificationBadge();
+        setInterval(updateNotificationBadge, 10000);
+    </script>
+</body>
+</html>

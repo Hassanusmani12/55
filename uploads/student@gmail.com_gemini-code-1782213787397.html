@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Teacher Dashboard</title>
+    <style>
+        body { font-family: serif; margin: 20px; }
+        table { border-collapse: collapse; margin-bottom: 30px; }
+        th, td { border: 1px solid #a0a0a0; padding: 5px 10px; text-align: left; }
+        th { font-weight: bold; }
+    </style>
+</head>
+<body>
+    <h1>TEACHER DASHBOARD</h1>
+    <a href="/logout"><button>Logout</button></a>
+    <hr>
+
+    <h2>Create Assignment</h2>
+    <form action="/teacher" method="POST">
+        <input type="text" name="title" placeholder="Title" required><br><br>
+        <textarea name="desc" placeholder="Description" required></textarea><br><br>
+        <input type="date" name="due_date" required>
+        <input type="number" name="marks" placeholder="Marks" required><br><br>
+        <select name="status">
+            <option value="active">Active</option>
+            <option value="closed">Closed</option>
+        </select><br><br>
+        <button type="submit">Add Assignment</button>
+    </form>
+
+    <hr>
+
+    <h2>My Assignments</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Title</th>
+                <th>Due Date</th>
+                <th>Marks</th>
+                <th>Status</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for a in assignments %}
+            <tr>
+                <td>{{ a.title }}</td>
+                <td>{{ a.due_date }}</td>
+                <td>{{ a.marks }}</td>
+                <td>{{ a.status }}</td>
+                <td>
+                    <a href="/submissions/{{ a._id }}"><button>View Submissions</button></a>
+                    <a href="/edit_assignment/{{ a._id }}"><button>Edit</button></a>
+                    <a href="/delete_assignment/{{ a._id }}"><button>Delete</button></a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>
