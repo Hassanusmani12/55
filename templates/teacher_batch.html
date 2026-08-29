@@ -1,126 +1,158 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="dark">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Manage Batch - {{ batch.batch_code }} | EduPredict</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Plus Jakarta Sans', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace'],
+                    }
+                }
+            }
+        }
+    </script>
     <style>
-        body { font-family: 'Inter', sans-serif; background-color: #050505; color: #e5e5e5; }
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #080c14; color: #f1f5f9; }
+        .glass-panel {
+            background: rgba(15, 23, 42, 0.7);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+        .glass-card {
+            background: rgba(15, 23, 42, 0.5);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+        }
         ::-webkit-calendar-picker-indicator { filter: invert(1); opacity: 0.5; cursor: pointer; }
     </style>
 </head>
-<body class="min-h-screen p-4 sm:p-8 selection:bg-amber-500/30 relative">
+<body class="min-h-screen p-4 sm:p-8 antialiased relative selection:bg-indigo-500/30 overflow-x-hidden">
     
-    <!-- Background Gradient -->
-    <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-amber-900/10 via-[#050505] to-[#050505] -z-10 fixed"></div>
+    <!-- Background Ambient Glow -->
+    <div class="fixed inset-0 pointer-events-none z-0">
+        <div class="absolute -top-40 -left-40 w-96 h-96 bg-indigo-600/15 rounded-full blur-[140px]"></div>
+        <div class="absolute top-1/2 -right-40 w-96 h-96 bg-violet-600/15 rounded-full blur-[140px]"></div>
+        <div class="absolute inset-0 bg-[linear-gradient(to_right,#1e293b12_1px,transparent_1px),linear-gradient(to_bottom,#1e293b12_1px,transparent_1px)] bg-[size:32px_32px]"></div>
+    </div>
     
-    <div class="max-w-7xl mx-auto">
+    <div class="max-w-7xl mx-auto relative z-10">
         
-        <!-- Top Navigation Bar -->
-        <div class="flex justify-between items-center mb-6">
-            <a href="/teacher" class="text-gray-400 hover:text-amber-500 transition-colors text-sm font-medium flex items-center gap-2">
-                <i class="fa-solid fa-arrow-left"></i> Back to Dashboard
-            </a>
-            <div class="flex items-center gap-4">
-                <a href="/support" class="bg-white/5 border border-white/10 hover:bg-white/10 text-gray-300 text-xs font-mono uppercase tracking-widest px-4 py-2 rounded transition-colors flex items-center gap-2">
-                    <i class="fa-solid fa-headset text-amber-500"></i> Support
+        <!-- Header -->
+        <header class="glass-panel rounded-2xl p-6 mb-8 shadow-xl border-slate-800">
+            <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-6 pb-5 border-b border-slate-800">
+                <a href="/teacher" class="glass-card hover:bg-slate-800 text-slate-300 hover:text-indigo-400 transition-all text-xs font-mono uppercase tracking-wider px-4 py-2 rounded-xl flex items-center gap-2 border border-slate-700/60 font-semibold">
+                    <i class="fa-solid fa-arrow-left"></i> Back to Dashboard
                 </a>
-                <a href="/notifications" class="text-gray-400 hover:text-amber-500 transition-colors p-1">
-                    <i class="fa-solid fa-bell text-xl"></i>
-                </a>
-            </div>
-        </div>
-
-        <!-- Header Section -->
-        <div class="mb-10 border-b border-white/10 pb-6 flex items-center gap-4">
-            <div class="h-14 w-14 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center text-amber-500 shadow-lg flex-shrink-0">
-                <i class="fa-solid fa-chalkboard-user text-2xl"></i>
-            </div>
-            <div>
-                <h1 class="text-3xl font-semibold tracking-tight text-white leading-tight uppercase">{{ batch.batch_code }}</h1>
-                <div class="flex items-center gap-3 mt-2 text-xs font-mono text-gray-400 tracking-widest uppercase">
-                    <span class="flex items-center gap-1.5"><i class="fa-regular fa-clock text-amber-500/70"></i> {{ batch.timing }}</span>
-                    <span class="text-gray-600">|</span>
-                    <span class="flex items-center gap-1.5"><i class="fa-regular fa-calendar text-amber-500/70"></i> {{ batch.days }}</span>
+                <div class="flex items-center gap-3">
+                    <a href="/support" class="glass-card hover:bg-slate-800 text-slate-200 text-xs font-mono uppercase tracking-wider px-4 py-2 rounded-xl transition-all flex items-center gap-2 border border-slate-700/60">
+                        <i class="fa-solid fa-headset text-indigo-400"></i> Support
+                    </a>
+                    <a href="/notifications" class="glass-card hover:bg-slate-800 text-slate-300 hover:text-indigo-400 transition-all p-2 rounded-xl border border-slate-700/60 flex items-center justify-center">
+                        <i class="fa-solid fa-bell text-base"></i>
+                    </a>
                 </div>
             </div>
-        </div>
 
-        <!-- Main Layout Grid -->
+            <div class="flex items-center gap-4">
+                <div class="h-14 w-14 rounded-2xl bg-gradient-to-br from-indigo-500/20 to-violet-500/20 border border-indigo-500/30 flex items-center justify-center text-indigo-400 shadow-lg ring-1 ring-white/10 flex-shrink-0">
+                    <i class="fa-solid fa-chalkboard-user text-2xl"></i>
+                </div>
+                <div>
+                    <h1 class="text-2xl font-extrabold tracking-tight text-white uppercase font-mono">{{ batch.batch_code }}</h1>
+                    <div class="flex items-center gap-4 mt-2 text-xs font-mono text-slate-400 tracking-wider">
+                        <span class="flex items-center gap-1.5"><i class="fa-regular fa-clock text-indigo-400"></i> {{ batch.timing }}</span>
+                        <span class="text-slate-700">|</span>
+                        <span class="flex items-center gap-1.5"><i class="fa-regular fa-calendar text-indigo-400"></i> {{ batch.days }}</span>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Workspace Grid -->
         <div class="grid grid-cols-1 xl:grid-cols-3 gap-8">
             
-            <!-- Left Sidebar (Forms & Lists) -->
-            <div class="xl:col-span-1 space-y-8">
+            <!-- Left Sidebar Controls -->
+            <div class="xl:col-span-1 space-y-6">
                 
-                <!-- Create Assignment Form -->
-                <div class="bg-[#0f0f0f] border border-white/5 p-6 rounded-xl shadow-2xl">
-                    <h2 class="text-lg font-medium text-white mb-5 flex items-center gap-2">
-                        <i class="fa-solid fa-plus text-amber-500"></i> New Assignment
-                    </h2>
+                <!-- Create Assignment Panel -->
+                <div class="glass-panel p-6 rounded-2xl shadow-xl border border-slate-800">
+                    <div class="flex items-center gap-3 mb-5 border-b border-slate-800 pb-4">
+                        <div class="p-2 rounded-lg bg-indigo-500/10 text-indigo-400">
+                            <i class="fa-solid fa-plus text-base"></i>
+                        </div>
+                        <h2 class="text-base font-bold text-white">Post New Assignment</h2>
+                    </div>
                     
                     <form action="/teacher_batch/{{ batch._id }}" method="POST" class="space-y-4">
                         <div>
                             <input type="text" name="title" placeholder="Assignment Title" required 
-                                   class="w-full bg-[#1a1a1a] border border-white/10 rounded px-4 py-2.5 text-sm text-white focus:outline-none focus:border-amber-500/50 transition-colors">
+                                   class="w-full bg-slate-900/90 border border-slate-700/70 rounded-xl px-4 py-2.5 text-sm text-white placeholder-slate-600 focus:outline-none focus:border-indigo-500 transition-colors">
                         </div>
                         <div>
-                            <textarea name="desc" placeholder="Task Description" required rows="3"
-                                      class="w-full bg-[#1a1a1a] border border-white/10 rounded px-4 py-2.5 text-sm text-white focus:outline-none focus:border-amber-500/50 transition-colors resize-none"></textarea>
+                            <textarea name="desc" placeholder="Task description & instructions..." required rows="3"
+                                      class="w-full bg-slate-900/90 border border-slate-700/70 rounded-xl px-4 py-2.5 text-sm text-white placeholder-slate-600 focus:outline-none focus:border-indigo-500 transition-colors resize-none"></textarea>
                         </div>
-                        <div class="grid grid-cols-2 gap-4">
+                        <div class="grid grid-cols-2 gap-3">
                             <div>
                                 <input type="date" name="due_date" required title="Due Date"
-                                       class="w-full bg-[#1a1a1a] border border-white/10 rounded px-3 py-2.5 text-sm text-gray-400 focus:outline-none focus:border-amber-500/50 transition-colors">
+                                       class="w-full bg-slate-900/90 border border-slate-700/70 rounded-xl px-3 py-2.5 text-xs text-slate-300 focus:outline-none focus:border-indigo-500 transition-colors">
                             </div>
                             <div>
                                 <input type="number" name="marks" placeholder="Total Marks" required 
-                                       class="w-full bg-[#1a1a1a] border border-white/10 rounded px-3 py-2.5 text-sm text-white focus:outline-none focus:border-amber-500/50 transition-colors">
+                                       class="w-full bg-slate-900/90 border border-slate-700/70 rounded-xl px-3 py-2.5 text-xs text-white placeholder-slate-600 focus:outline-none focus:border-indigo-500 transition-colors">
                             </div>
                         </div>
                         <div class="relative">
-                            <select name="status" class="w-full bg-[#1a1a1a] border border-white/10 rounded px-4 py-2.5 text-sm text-white focus:outline-none focus:border-amber-500/50 transition-colors appearance-none cursor-pointer">
+                            <select name="status" class="w-full bg-slate-900/90 border border-slate-700/70 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-indigo-500 transition-colors appearance-none cursor-pointer">
                                 <option value="active">Active</option>
                                 <option value="closed">Closed</option>
                             </select>
-                            <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-gray-400">
+                            <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-slate-500">
                                 <i class="fa-solid fa-chevron-down text-xs"></i>
                             </div>
                         </div>
-                        <button type="submit" class="w-full bg-amber-600/90 hover:bg-amber-500 text-black text-sm font-medium py-2.5 rounded transition-colors mt-2 shadow-[0_0_10px_rgba(217,119,6,0.2)]">
-                            Create Assignment
+                        <button type="submit" class="w-full bg-indigo-600 hover:bg-indigo-500 text-white font-mono uppercase tracking-wider text-xs font-bold py-3 rounded-xl transition-all shadow-lg shadow-indigo-600/20 flex items-center justify-center gap-2 cursor-pointer border border-indigo-400/30">
+                            <i class="fa-solid fa-paper-plane text-xs"></i> Create Assignment
                         </button>
                     </form>
                 </div>
 
-                <!-- Enrolled Students & Attendance Roster -->
-                <div class="bg-[#0f0f0f] border border-white/5 p-6 rounded-xl shadow-2xl">
-                    <div class="flex items-center justify-between mb-5">
-                        <h2 class="text-lg font-medium text-white flex items-center gap-2">
-                            <i class="fa-solid fa-user-check text-amber-500"></i> Attendance Roster
-                        </h2>
+                <!-- Attendance Roster Panel -->
+                <div class="glass-panel p-6 rounded-2xl shadow-xl border border-slate-800">
+                    <div class="flex items-center gap-3 mb-5 border-b border-slate-800 pb-4">
+                        <div class="p-2 rounded-lg bg-emerald-500/10 text-emerald-400">
+                            <i class="fa-solid fa-user-check text-base"></i>
+                        </div>
+                        <h2 class="text-base font-bold text-white">Attendance Roster</h2>
                     </div>
 
-                    <div class="space-y-4">
+                    <div class="space-y-3">
                         {% for s in students %}
-                        <div class="p-3 bg-white/[0.02] border border-white/5 rounded-lg space-y-2">
-                            <div class="flex items-center gap-3">
-                                <div class="w-8 h-8 rounded-full bg-[#1a1a1a] flex items-center justify-center text-amber-500 flex-shrink-0 border border-amber-500/20">
-                                    <i class="fa-regular fa-user text-xs"></i>
+                        <div class="p-3 bg-slate-900/60 border border-slate-800 rounded-xl space-y-2">
+                            <div class="flex items-center gap-2.5">
+                                <div class="w-7 h-7 rounded-full bg-slate-800 border border-slate-700 flex items-center justify-center text-xs text-indigo-400 font-bold flex-shrink-0">
+                                    {{ s.student[0]|upper }}
                                 </div>
-                                <span class="text-xs font-mono text-gray-300 truncate flex-grow">{{ s.student }}</span>
+                                <span class="text-xs font-mono text-slate-200 truncate flex-grow">{{ s.student }}</span>
                             </div>
 
-                            <!-- Attendance Action Form -->
-                            <div class="flex gap-2 pt-1 border-t border-white/5">
+                            <div class="flex gap-2 pt-1 border-t border-slate-800/80">
                                 <form action="/mark_attendance" method="POST" class="flex-1 m-0">
                                     <input type="hidden" name="student_email" value="{{ s.student }}">
                                     <input type="hidden" name="batch_id" value="{{ batch._id }}">
                                     <input type="hidden" name="status" value="present">
-                                    <button type="submit" class="w-full bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-400 border border-emerald-500/20 text-[10px] font-mono uppercase tracking-widest py-1.5 rounded transition-colors flex items-center justify-center gap-1">
-                                        <i class="fa-solid fa-check"></i> Present
+                                    <button type="submit" class="w-full bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 text-[10px] font-mono font-bold uppercase tracking-wider py-1.5 rounded-lg transition-all flex items-center justify-center gap-1 cursor-pointer">
+                                        <i class="fa-solid fa-check text-[10px]"></i> Present
                                     </button>
                                 </form>
 
@@ -128,15 +160,15 @@
                                     <input type="hidden" name="student_email" value="{{ s.student }}">
                                     <input type="hidden" name="batch_id" value="{{ batch._id }}">
                                     <input type="hidden" name="status" value="absent">
-                                    <button type="submit" class="w-full bg-red-500/10 hover:bg-red-500/20 text-red-400 border border-red-500/20 text-[10px] font-mono uppercase tracking-widest py-1.5 rounded transition-colors flex items-center justify-center gap-1">
-                                        <i class="fa-solid fa-xmark"></i> Absent
+                                    <button type="submit" class="w-full bg-rose-500/10 hover:bg-rose-500/20 text-rose-400 border border-rose-500/30 text-[10px] font-mono font-bold uppercase tracking-wider py-1.5 rounded-lg transition-all flex items-center justify-center gap-1 cursor-pointer">
+                                        <i class="fa-solid fa-xmark text-[10px]"></i> Absent
                                     </button>
                                 </form>
                             </div>
                         </div>
                         {% else %}
-                        <div class="text-center py-6 text-gray-500 text-sm italic border border-dashed border-white/10 rounded-lg">
-                            No students enrolled yet.
+                        <div class="text-center py-6 text-slate-500 text-xs italic border border-dashed border-slate-800 rounded-xl">
+                            No enrolled students found.
                         </div>
                         {% endfor %}
                     </div>
@@ -144,47 +176,51 @@
 
             </div>
 
-            <!-- Right Column: Assignments Data Table -->
+            <!-- Right Assignments Table -->
             <div class="xl:col-span-2">
-                <div class="bg-[#0f0f0f] border border-white/5 rounded-xl shadow-2xl overflow-hidden">
-                    <div class="border-b border-white/5 bg-white/[0.02] p-6 flex items-center justify-between">
-                        <h2 class="text-lg font-medium text-white flex items-center gap-2">
-                            <i class="fa-solid fa-list-check text-amber-500"></i> Course Assignments
-                        </h2>
+                <div class="glass-panel rounded-2xl shadow-xl border border-slate-800 overflow-hidden">
+                    <div class="p-5 border-b border-slate-800 bg-slate-900/40 flex items-center justify-between">
+                        <div class="flex items-center gap-3">
+                            <div class="p-2 rounded-lg bg-indigo-500/10 text-indigo-400">
+                                <i class="fa-solid fa-list-check text-base"></i>
+                            </div>
+                            <h2 class="text-base font-bold text-white">Course Assignments</h2>
+                        </div>
                     </div>
+
                     <div class="overflow-x-auto">
                         <table class="w-full text-left border-collapse">
                             <thead>
-                                <tr class="bg-[#1a1a1a]/50 text-xs font-mono text-gray-400 uppercase tracking-widest border-b border-white/5">
-                                    <th class="py-4 px-6 font-medium">Title</th>
-                                    <th class="py-4 px-6 font-medium">Due Date</th>
-                                    <th class="py-4 px-6 font-medium text-center">Marks</th>
-                                    <th class="py-4 px-6 font-medium text-center">Status</th>
-                                    <th class="py-4 px-6 font-medium text-right">Actions</th>
+                                <tr class="bg-slate-900/80 text-xs font-mono text-slate-400 uppercase tracking-wider border-b border-slate-800">
+                                    <th class="py-3.5 px-5 font-semibold">Title</th>
+                                    <th class="py-3.5 px-5 font-semibold">Due Date</th>
+                                    <th class="py-3.5 px-5 font-semibold text-center">Marks</th>
+                                    <th class="py-3.5 px-5 font-semibold text-center">Status</th>
+                                    <th class="py-3.5 px-5 font-semibold text-right">Actions</th>
                                 </tr>
                             </thead>
-                            <tbody class="divide-y divide-white/5 text-sm text-gray-300">
+                            <tbody class="divide-y divide-slate-800/60 text-sm text-slate-300">
                                 {% for a in assignments %}
-                                <tr class="hover:bg-white/[0.02] transition-colors group">
-                                    <td class="py-4 px-6 font-medium text-white">{{ a.title }}</td>
-                                    <td class="py-4 px-6 text-gray-400">{{ a.due_date }}</td>
-                                    <td class="py-4 px-6 text-center text-amber-500 font-mono">{{ a.marks }}</td>
-                                    <td class="py-4 px-6 text-center">
-                                        <span class="px-2.5 py-1 rounded text-[10px] uppercase tracking-widest font-bold 
-                                            {% if a.status == 'active' %}bg-emerald-500/10 text-emerald-500 border border-emerald-500/20
-                                            {% else %}bg-gray-500/10 text-gray-400 border border-gray-500/20{% endif %}">
+                                <tr class="hover:bg-slate-800/30 transition-colors">
+                                    <td class="py-3.5 px-5 font-semibold text-white">{{ a.title }}</td>
+                                    <td class="py-3.5 px-5 text-slate-400 text-xs font-mono">{{ a.due_date }}</td>
+                                    <td class="py-3.5 px-5 text-center text-amber-400 font-mono font-bold">{{ a.marks }}</td>
+                                    <td class="py-3.5 px-5 text-center">
+                                        <span class="px-2.5 py-1 rounded-lg text-[10px] font-mono font-bold uppercase tracking-wider
+                                            {% if a.status == 'active' %}bg-emerald-500/10 text-emerald-400 border border-emerald-500/30
+                                            {% else %}bg-slate-500/10 text-slate-400 border border-slate-500/30{% endif %}">
                                             {{ a.status }}
                                         </span>
                                     </td>
-                                    <td class="py-4 px-6">
-                                        <div class="flex items-center justify-end gap-2 opacity-80 group-hover:opacity-100 transition-opacity">
-                                            <a href="/submissions/{{ a._id }}" title="View Submissions" class="w-8 h-8 rounded bg-blue-500/10 text-blue-500 border border-blue-500/20 flex items-center justify-center hover:bg-blue-500/20 transition-colors">
+                                    <td class="py-3.5 px-5">
+                                        <div class="flex items-center justify-end gap-2">
+                                            <a href="/submissions/{{ a._id }}" title="View Submissions" class="p-2 rounded-lg bg-indigo-500/10 text-indigo-400 border border-indigo-500/20 hover:bg-indigo-500/20 transition-all">
                                                 <i class="fa-solid fa-inbox text-xs"></i>
                                             </a>
-                                            <a href="/edit_assignment/{{ a._id }}" title="Edit Assignment" class="w-8 h-8 rounded bg-amber-500/10 text-amber-500 border border-amber-500/20 flex items-center justify-center hover:bg-amber-500/20 transition-colors">
+                                            <a href="/edit_assignment/{{ a._id }}" title="Edit Assignment" class="p-2 rounded-lg bg-amber-500/10 text-amber-400 border border-amber-500/20 hover:bg-amber-500/20 transition-all">
                                                 <i class="fa-solid fa-pen text-xs"></i>
                                             </a>
-                                            <a href="/delete_assignment/{{ a._id }}" title="Delete Assignment" onclick="return confirm('Are you sure you want to delete this assignment?');" class="w-8 h-8 rounded bg-red-500/10 text-red-500 border border-red-500/20 flex items-center justify-center hover:bg-red-500/20 transition-colors">
+                                            <a href="/delete_assignment/{{ a._id }}" title="Delete Assignment" onclick="return confirm('Are you sure you want to delete this assignment?');" class="p-2 rounded-lg bg-rose-500/10 text-rose-400 border border-rose-500/20 hover:bg-rose-500/20 transition-all">
                                                 <i class="fa-solid fa-trash text-xs"></i>
                                             </a>
                                         </div>
@@ -192,7 +228,7 @@
                                 </tr>
                                 {% else %}
                                 <tr>
-                                    <td colspan="5" class="py-10 text-center text-gray-500 italic">No assignments have been created for this batch yet.</td>
+                                    <td colspan="5" class="py-10 text-center text-slate-500 italic text-sm">No assignments posted for this batch yet.</td>
                                 </tr>
                                 {% endfor %}
                             </tbody>

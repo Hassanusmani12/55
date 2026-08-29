@@ -1,137 +1,177 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="dark">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Help & Support | EduPredict</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
-    <style>body { font-family: 'Inter', sans-serif; background-color: #050505; color: #e5e5e5; }</style>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Plus Jakarta Sans', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #080c14; color: #f1f5f9; }
+        .glass-panel {
+            background: rgba(15, 23, 42, 0.7);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+        .glass-card {
+            background: rgba(15, 23, 42, 0.5);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+        }
+    </style>
 </head>
-<body class="min-h-screen p-4 sm:p-8 selection:bg-amber-500/30 relative">
+<body class="min-h-screen p-4 sm:p-8 antialiased relative selection:bg-indigo-500/30 overflow-x-hidden">
     
-    <!-- Background Gradient -->
-    <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-amber-900/10 via-[#050505] to-[#050505] -z-10 fixed"></div>
+    <!-- Background Glow -->
+    <div class="fixed inset-0 pointer-events-none z-0">
+        <div class="absolute -top-40 -left-40 w-96 h-96 bg-indigo-600/15 rounded-full blur-[140px]"></div>
+        <div class="absolute top-1/2 -right-40 w-96 h-96 bg-violet-600/15 rounded-full blur-[140px]"></div>
+        <div class="absolute inset-0 bg-[linear-gradient(to_right,#1e293b12_1px,transparent_1px),linear-gradient(to_bottom,#1e293b12_1px,transparent_1px)] bg-[size:32px_32px]"></div>
+    </div>
     
-    <div class="max-w-4xl mx-auto">
+    <div class="max-w-4xl mx-auto relative z-10">
         
-        <!-- Header Section -->
-        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-8 border-b border-white/10 pb-6 gap-5 sm:gap-0">
+        <!-- Header Bar -->
+        <header class="glass-panel rounded-2xl p-6 mb-8 shadow-xl flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 border-slate-800">
             <div class="flex items-center gap-4">
-                <div class="h-12 w-12 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center text-amber-500 shadow-lg">
-                    <i class="fa-solid fa-headset text-xl"></i>
+                <div class="h-14 w-14 rounded-2xl bg-gradient-to-br from-indigo-500/20 to-violet-500/20 border border-indigo-500/30 flex items-center justify-center text-indigo-400 shadow-lg ring-1 ring-white/10">
+                    <i class="fa-solid fa-headset text-2xl"></i>
                 </div>
                 <div>
-                    <h1 class="text-2xl font-semibold tracking-tight text-white">Help & Support</h1>
-                    <p class="text-gray-500 text-xs font-mono uppercase tracking-widest mt-1">Submit Tickets & Provide Feedback</p>
+                    <h1 class="text-2xl font-extrabold tracking-tight text-white">Help & Support</h1>
+                    <p class="text-slate-400 text-xs font-mono uppercase tracking-wider mt-1">Submit Inquiries & Review Support Status</p>
                 </div>
             </div>
             <div class="w-full sm:w-auto">
-                <a href="javascript:history.back()" class="w-full sm:w-auto px-6 py-2.5 rounded border border-white/10 text-gray-300 hover:bg-white/5 transition-colors font-medium text-sm flex items-center justify-center gap-2">
+                <a href="javascript:history.back()" class="glass-card hover:bg-slate-800 text-slate-200 border border-slate-700/60 font-semibold text-xs font-mono uppercase tracking-wider px-5 py-2.5 rounded-xl transition-all flex items-center justify-center gap-2">
                     <i class="fa-solid fa-arrow-left"></i> Dashboard
                 </a>
             </div>
-        </div>
+        </header>
 
-        <!-- Success Message -->
+        <!-- Success Banner -->
         {% if request.args.get('success') %}
-        <div class="bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 px-6 py-4 rounded-xl mb-8 flex items-center gap-3 shadow-lg">
+        <div class="bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 px-6 py-4 rounded-2xl mb-8 flex items-center gap-3 shadow-lg">
             <i class="fa-solid fa-circle-check text-xl"></i>
-            <p class="text-sm font-medium">Your ticket has been submitted successfully! Our team will review it shortly.</p>
+            <p class="text-xs font-semibold">Your support ticket has been submitted successfully! The administration team will review your inquiry.</p>
         </div>
         {% endif %}
 
-        <!-- Ticket Submission Form -->
-        <div class="bg-[#0f0f0f] border border-white/5 p-8 rounded-xl shadow-2xl mb-10">
-            <h2 class="text-lg font-medium text-white mb-6">Submit a New Request</h2>
+        <!-- Ticket Submission Panel -->
+        <div class="glass-panel p-8 rounded-3xl shadow-2xl border border-slate-800 mb-10 relative overflow-hidden">
+            <div class="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-indigo-500 via-violet-500 to-cyan-500"></div>
+
+            <div class="flex items-center gap-3 mb-6 border-b border-slate-800 pb-4">
+                <div class="p-2 rounded-lg bg-indigo-500/10 text-indigo-400">
+                    <i class="fa-solid fa-paper-plane text-base"></i>
+                </div>
+                <h2 class="text-lg font-bold text-white">Submit a Support Ticket</h2>
+            </div>
             
-            <form action="/support" method="POST" class="space-y-6">
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <form action="/support" method="POST" class="space-y-5">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
                     
-                    <!-- Category Dropdown -->
+                    <!-- Category -->
                     <div>
-                        <label class="block text-xs font-mono text-gray-400 mb-2 uppercase tracking-wide">Category</label>
+                        <label class="block text-xs font-mono font-semibold text-slate-300 mb-2 uppercase tracking-wider">Category</label>
                         <div class="relative">
-                            <select name="category" required class="w-full bg-[#1a1a1a] border border-white/10 rounded px-4 py-3 text-white focus:outline-none focus:border-amber-500/50 transition-colors appearance-none cursor-pointer">
+                            <select name="category" required class="w-full bg-slate-900/90 border border-slate-700/70 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-indigo-500 transition-colors appearance-none cursor-pointer">
                                 <option value="Assistance">General Assistance</option>
                                 <option value="Bug Report">Report a Bug/Issue</option>
                                 <option value="Feedback">Platform Feedback</option>
                             </select>
-                            <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-gray-400">
+                            <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-slate-500">
                                 <i class="fa-solid fa-chevron-down text-xs"></i>
                             </div>
                         </div>
                     </div>
 
-                    <!-- Subject Input -->
+                    <!-- Subject -->
                     <div>
-                        <label class="block text-xs font-mono text-gray-400 mb-2 uppercase tracking-wide">Subject</label>
-                        <input type="text" name="subject" placeholder="Brief summary" required 
-                               class="w-full bg-[#1a1a1a] border border-white/10 rounded px-4 py-3 text-white placeholder-gray-600 focus:outline-none focus:border-amber-500/50 transition-colors">
+                        <label class="block text-xs font-mono font-semibold text-slate-300 mb-2 uppercase tracking-wider">Subject</label>
+                        <input type="text" name="subject" placeholder="Brief issue summary" required
+                               class="w-full bg-slate-900/90 border border-slate-700/70 rounded-xl px-4 py-3 text-sm text-white placeholder-slate-600 focus:outline-none focus:border-indigo-500 transition-colors">
                     </div>
                 </div>
 
-                <!-- Message Textarea -->
+                <!-- Message -->
                 <div>
-                    <label class="block text-xs font-mono text-gray-400 mb-2 uppercase tracking-wide">Message Details</label>
-                    <textarea name="message" rows="4" placeholder="Describe your issue or feedback in detail..." required 
-                              class="w-full bg-[#1a1a1a] border border-white/10 rounded px-4 py-3 text-white placeholder-gray-600 focus:outline-none focus:border-amber-500/50 transition-colors resize-none"></textarea>
+                    <label class="block text-xs font-mono font-semibold text-slate-300 mb-2 uppercase tracking-wider">Message Details</label>
+                    <textarea name="message" rows="4" placeholder="Describe your question or feedback in detail..." required
+                              class="w-full bg-slate-900/90 border border-slate-700/70 rounded-xl px-4 py-3 text-sm text-white placeholder-slate-600 focus:outline-none focus:border-indigo-500 transition-colors resize-none"></textarea>
                 </div>
 
                 <!-- Submit Button -->
                 <div class="flex justify-end pt-2">
-                    <button type="submit" class="w-full md:w-auto bg-amber-600/90 hover:bg-amber-500 text-black font-medium px-8 py-3 rounded transition-colors text-sm shadow-[0_0_15px_rgba(217,119,6,0.3)] flex items-center justify-center gap-2">
-                        <i class="fa-solid fa-paper-plane"></i> Submit Ticket
+                    <button type="submit" class="w-full md:w-auto bg-indigo-600 hover:bg-indigo-500 text-white font-mono uppercase tracking-wider text-xs font-bold px-8 py-3.5 rounded-xl transition-all shadow-lg shadow-indigo-600/20 border border-indigo-400/30 flex items-center justify-center gap-2 cursor-pointer">
+                        <i class="fa-solid fa-paper-plane text-xs"></i> Submit Ticket
                     </button>
                 </div>
             </form>
         </div>
 
-        <!-- Previous Tickets List -->
+        <!-- History Stream -->
         <div>
-            <h3 class="text-xl font-medium text-white tracking-tight mb-5 flex items-center gap-3">
-                <i class="fa-solid fa-clock-rotate-left text-amber-500 text-lg"></i>
-                My Previous Tickets
-            </h3>
+            <div class="flex items-center gap-3 mb-5">
+                <div class="p-2 rounded-lg bg-indigo-500/10 text-indigo-400">
+                    <i class="fa-solid fa-clock-rotate-left text-base"></i>
+                </div>
+                <h3 class="text-lg font-bold text-white tracking-tight">My Previous Support Tickets</h3>
+            </div>
             
             <div class="space-y-4">
                 {% for ticket in tickets %}
-                <div class="bg-[#0f0f0f] border border-white/5 p-6 rounded-xl hover:bg-white/[0.02] transition-colors shadow-lg">
-                    <div class="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-3 sm:gap-0 mb-3">
-                        <h4 class="text-white font-semibold leading-tight">
-                            <span class="text-amber-500 font-mono text-xs uppercase tracking-widest mr-2">[{{ ticket.category }}]</span>
+                <div class="glass-panel p-6 rounded-2xl border border-slate-800 shadow-lg hover:border-slate-700 transition-all">
+                    <div class="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-3 mb-3">
+                        <h4 class="text-white font-bold text-base leading-snug">
+                            <span class="text-indigo-400 font-mono text-xs uppercase tracking-wider mr-2 bg-indigo-500/10 border border-indigo-500/20 px-2 py-0.5 rounded-md">
+                                {{ ticket.category }}
+                            </span>
                             {{ ticket.subject }}
                         </h4>
                         
                         <!-- Status Badge -->
                         <div class="flex-shrink-0">
                             {% if ticket.status == 'Resolved' %}
-                                <span class="px-3 py-1 rounded-md text-[10px] uppercase tracking-widest font-bold bg-emerald-500/10 text-emerald-500 border border-emerald-500/20 inline-flex items-center gap-1.5">
-                                    <i class="fa-solid fa-check"></i> Resolved
+                                <span class="px-3 py-1 rounded-lg text-[10px] font-mono font-bold uppercase tracking-wider bg-emerald-500/10 text-emerald-400 border border-emerald-500/30 inline-flex items-center gap-1.5">
+                                    <i class="fa-solid fa-check text-[10px]"></i> Resolved
                                 </span>
                             {% else %}
-                                <span class="px-3 py-1 rounded-md text-[10px] uppercase tracking-widest font-bold bg-amber-500/10 text-amber-500 border border-amber-500/20 inline-flex items-center gap-1.5">
-                                    <i class="fa-solid fa-hourglass-half"></i> Open
+                                <span class="px-3 py-1 rounded-lg text-[10px] font-mono font-bold uppercase tracking-wider bg-amber-500/10 text-amber-400 border border-amber-500/30 inline-flex items-center gap-1.5 animate-pulse">
+                                    <i class="fa-solid fa-hourglass-half text-[10px]"></i> Open
                                 </span>
                             {% endif %}
                         </div>
                     </div>
                     
-                    <p class="text-sm text-gray-400 mb-4 leading-relaxed">{{ ticket.message }}</p>
+                    <p class="text-xs text-slate-300 mb-4 leading-relaxed font-sans">{{ ticket.message }}</p>
                     
-                    <div class="text-xs font-mono text-gray-600 flex items-center gap-1.5 border-t border-white/5 pt-4">
-                        <i class="fa-regular fa-calendar text-gray-500"></i>
+                    <div class="text-[11px] font-mono text-slate-500 flex items-center gap-1.5 border-t border-slate-800/80 pt-3">
+                        <i class="fa-regular fa-calendar text-slate-500"></i>
                         Submitted: {{ ticket.submitted_on.strftime('%b %d, %Y') }}
                     </div>
                 </div>
                 {% else %}
-                <!-- Empty State -->
-                <div class="bg-[#0f0f0f] border border-white/5 p-12 rounded-xl text-center shadow-xl">
-                    <div class="w-16 h-16 bg-white/5 border border-white/10 rounded-full mx-auto flex items-center justify-center mb-4">
-                        <i class="fa-solid fa-ticket text-gray-500 text-2xl"></i>
+                <div class="glass-panel p-12 rounded-2xl text-center border border-slate-800 shadow-xl">
+                    <div class="w-16 h-16 bg-slate-900 border border-slate-800 rounded-2xl mx-auto flex items-center justify-center mb-4 text-slate-500">
+                        <i class="fa-solid fa-ticket text-2xl"></i>
                     </div>
-                    <p class="text-gray-400 text-sm">You have not submitted any support tickets yet.</p>
+                    <p class="text-slate-400 text-xs">No support tickets submitted yet.</p>
                 </div>
                 {% endfor %}
             </div>

@@ -1,42 +1,70 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="dark">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Edit Assignment | EduPredict</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Plus Jakarta Sans', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace'],
+                    }
+                }
+            }
+        }
+    </script>
     <style>
-        body { font-family: 'Inter', sans-serif; background-color: #050505; color: #e5e5e5; }
-        /* Fix for dark mode date picker calendar icon */
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #080c14; color: #f1f5f9; }
+        .glass-panel {
+            background: rgba(15, 23, 42, 0.75);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+        .glass-card {
+            background: rgba(15, 23, 42, 0.5);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+        }
         ::-webkit-calendar-picker-indicator { filter: invert(1); opacity: 0.5; cursor: pointer; }
     </style>
 </head>
-<body class="min-h-screen p-8 selection:bg-amber-500/30 relative flex items-center justify-center">
+<body class="min-h-screen p-4 sm:p-8 antialiased relative selection:bg-indigo-500/30 overflow-x-hidden flex items-center justify-center">
     
-    <!-- Background Gradient -->
-    <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-amber-900/10 via-[#050505] to-[#050505] -z-10"></div>
+    <!-- Background Ambient Glow -->
+    <div class="fixed inset-0 pointer-events-none z-0">
+        <div class="absolute -top-40 -left-40 w-96 h-96 bg-indigo-600/15 rounded-full blur-[140px]"></div>
+        <div class="absolute top-1/2 -right-40 w-96 h-96 bg-violet-600/15 rounded-full blur-[140px]"></div>
+        <div class="absolute inset-0 bg-[linear-gradient(to_right,#1e293b12_1px,transparent_1px),linear-gradient(to_bottom,#1e293b12_1px,transparent_1px)] bg-[size:32px_32px]"></div>
+    </div>
     
-    <div class="w-full max-w-2xl">
+    <div class="w-full max-w-2xl relative z-10 py-8">
         
-        <!-- Top Navigation / Back -->
+        <!-- Back Link -->
         <div class="mb-6">
-            <a href="/teacher" class="text-gray-400 hover:text-amber-500 transition-colors text-sm font-medium flex items-center gap-2 w-fit">
+            <a href="/teacher" class="glass-card hover:bg-slate-800 text-slate-300 hover:text-indigo-400 transition-all text-xs font-mono uppercase tracking-wider px-4 py-2.5 rounded-xl border border-slate-700/60 font-semibold inline-flex items-center gap-2">
                 <i class="fa-solid fa-arrow-left"></i> Back to Dashboard
             </a>
         </div>
 
-        <!-- Main Form Card -->
-        <div class="bg-[#0f0f0f] border border-white/5 p-8 sm:p-10 rounded-xl shadow-2xl">
-            
-            <div class="border-b border-white/10 pb-6 mb-8 flex items-center gap-3">
-                <div class="h-10 w-10 rounded bg-amber-500/10 border border-amber-500/20 flex items-center justify-center text-amber-500">
-                    <i class="fa-solid fa-pen-to-square"></i>
+        <!-- Form Card -->
+        <div class="glass-panel p-8 sm:p-10 rounded-3xl shadow-2xl border border-slate-800 relative overflow-hidden">
+            <div class="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-indigo-500 via-violet-500 to-cyan-500"></div>
+
+            <div class="border-b border-slate-800 pb-6 mb-8 flex items-center gap-4">
+                <div class="h-12 w-12 rounded-2xl bg-indigo-500/10 border border-indigo-500/20 flex items-center justify-center text-indigo-400 shadow-md">
+                    <i class="fa-solid fa-pen-to-square text-xl"></i>
                 </div>
                 <div>
-                    <h1 class="text-2xl font-semibold tracking-tight text-white">Edit Assignment</h1>
-                    <p class="text-gray-500 text-xs font-mono uppercase tracking-widest mt-1">Modify Task Parameters</p>
+                    <h1 class="text-2xl font-extrabold tracking-tight text-white">Edit Assignment</h1>
+                    <p class="text-slate-400 text-xs font-mono uppercase tracking-wider mt-1">Modify Task Parameters & Guidelines</p>
                 </div>
             </div>
 
@@ -44,54 +72,53 @@
                 
                 <!-- Title Field -->
                 <div>
-                    <label class="block text-xs font-mono text-gray-400 mb-2 uppercase tracking-wide">Assignment Title</label>
+                    <label class="block text-xs font-mono font-semibold text-slate-300 mb-2 uppercase tracking-wider">Assignment Title</label>
                     <input type="text" name="title" value="{{ assignment.title }}" required 
-                           class="w-full bg-[#1a1a1a] border border-white/10 rounded px-4 py-3 text-white focus:outline-none focus:border-amber-500/50 transition-colors">
+                           class="w-full bg-slate-900/90 border border-slate-700/70 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-indigo-500 transition-colors">
                 </div>
                 
                 <!-- Description Field -->
                 <div>
-                    <label class="block text-xs font-mono text-gray-400 mb-2 uppercase tracking-wide">Detailed Description</label>
+                    <label class="block text-xs font-mono font-semibold text-slate-300 mb-2 uppercase tracking-wider">Detailed Description</label>
                     <textarea name="desc" rows="4" required 
-                              class="w-full bg-[#1a1a1a] border border-white/10 rounded px-4 py-3 text-white focus:outline-none focus:border-amber-500/50 transition-colors resize-none">{{ assignment.desc }}</textarea>
+                              class="w-full bg-slate-900/90 border border-slate-700/70 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-indigo-500 transition-colors resize-none">{{ assignment.desc }}</textarea>
                 </div>
                 
-                <!-- Two Column Grid for Date & Marks -->
+                <!-- Grid for Date & Marks -->
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
                     <div>
-                        <label class="block text-xs font-mono text-gray-400 mb-2 uppercase tracking-wide">Due Date</label>
+                        <label class="block text-xs font-mono font-semibold text-slate-300 mb-2 uppercase tracking-wider">Due Date</label>
                         <input type="date" name="due_date" value="{{ assignment.due_date }}" required 
-                               class="w-full bg-[#1a1a1a] border border-white/10 rounded px-4 py-3 text-gray-300 focus:outline-none focus:border-amber-500/50 transition-colors">
+                               class="w-full bg-slate-900/90 border border-slate-700/70 rounded-xl px-4 py-3 text-sm text-slate-300 focus:outline-none focus:border-indigo-500 transition-colors">
                     </div>
                     
                     <div>
-                        <label class="block text-xs font-mono text-gray-400 mb-2 uppercase tracking-wide">Total Marks</label>
+                        <label class="block text-xs font-mono font-semibold text-slate-300 mb-2 uppercase tracking-wider">Total Marks</label>
                         <input type="number" name="marks" value="{{ assignment.marks }}" required min="1"
-                               class="w-full bg-[#1a1a1a] border border-white/10 rounded px-4 py-3 text-white focus:outline-none focus:border-amber-500/50 transition-colors">
+                               class="w-full bg-slate-900/90 border border-slate-700/70 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-indigo-500 transition-colors">
                     </div>
                 </div>
                 
-                <!-- Status Dropdown -->
+                <!-- Status -->
                 <div>
-                    <label class="block text-xs font-mono text-gray-400 mb-2 uppercase tracking-wide">Status</label>
+                    <label class="block text-xs font-mono font-semibold text-slate-300 mb-2 uppercase tracking-wider">Status</label>
                     <div class="relative">
-                        <select name="status" class="w-full bg-[#1a1a1a] border border-white/10 rounded px-4 py-3 text-white focus:outline-none focus:border-amber-500/50 transition-colors appearance-none cursor-pointer">
+                        <select name="status" class="w-full bg-slate-900/90 border border-slate-700/70 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-indigo-500 transition-colors appearance-none cursor-pointer">
                             <option value="active" {% if assignment.status == 'active' %}selected{% endif %}>Active</option>
                             <option value="closed" {% if assignment.status == 'closed' %}selected{% endif %}>Closed</option>
                         </select>
-                        <!-- Custom dropdown arrow -->
-                        <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-gray-400">
+                        <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-slate-500">
                             <i class="fa-solid fa-chevron-down text-xs"></i>
                         </div>
                     </div>
                 </div>
                 
-                <!-- Action Buttons -->
-                <div class="pt-6 mt-6 border-t border-white/5 flex gap-4 justify-end">
-                    <a href="/teacher" class="px-6 py-2.5 rounded border border-white/10 text-gray-300 hover:bg-white/5 transition-colors font-medium text-sm flex items-center justify-center">
+                <!-- Actions -->
+                <div class="pt-6 border-t border-slate-800 flex gap-4 justify-end">
+                    <a href="/teacher" class="glass-card hover:bg-slate-800 text-slate-300 border border-slate-700/60 font-semibold text-xs font-mono uppercase tracking-wider px-6 py-3 rounded-xl transition-all">
                         Cancel
                     </a>
-                    <button type="submit" class="bg-amber-600/90 hover:bg-amber-500 text-black font-medium px-8 py-2.5 rounded transition-colors text-sm shadow-[0_0_15px_rgba(217,119,6,0.3)]">
+                    <button type="submit" class="bg-indigo-600 hover:bg-indigo-500 text-white font-mono uppercase tracking-wider text-xs font-bold px-8 py-3 rounded-xl transition-all shadow-lg shadow-indigo-600/20 border border-indigo-400/30 cursor-pointer">
                         Update Assignment
                     </button>
                 </div>
